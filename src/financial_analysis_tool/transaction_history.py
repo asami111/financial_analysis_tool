@@ -67,7 +67,7 @@ class TransactionHistory:
         """ Reorders by month and adds missing months in the summary DataFrame, 
          as well as filling NaN values in the summary DataFrame with zero. """
         summary = summary.reindex(self.months).fillna(0)
-        # Create 'net' column in the summary DataFrame.
+        # Create 'Net' column in the summary DataFrame.
         summary["Net"] = summary["Income"] - summary["Spending"]
         return summary
 
