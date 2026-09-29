@@ -71,7 +71,8 @@ def load_transactions(path: str = DATA_FILE_PATH, date_format: str = "%m/%d/%Y",
             f"Dates do not match the format {date_format!r}. "
             "Please pass the right date format."
         )
-    # Creating the 'Month' column.
+    # Creating the 'Month' column, which has year then month, which is essential for
+    # correct sorting.
     df["Month"] = df["Date"].dt.strftime("%Y-%m")
 
     # Creating the 'Signed Amount' column, where 'Transaction Type' with 'debit' value
