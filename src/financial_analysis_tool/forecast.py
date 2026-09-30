@@ -53,7 +53,7 @@ class BalanceForecast:
 
     @property
     def monthly_net(self) -> float:
-        """Return the typical net change in balance per month,
+        """Return the typical net change in balance per month.
 
         This typical net change depends on the specified method.
         """

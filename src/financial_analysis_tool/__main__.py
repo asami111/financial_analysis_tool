@@ -74,7 +74,7 @@ def print_recurring(history: TransactionHistory):
         return
     window = payments[0].recent_months
     print(
-        "Bills and subscriptions paid almost each month in the last "
+        "Bills and subscriptions paid almost every month in the last "
         f"{window} months:"
     )
     print(

@@ -69,7 +69,7 @@ class SavingsRateRule(AdviceRule):
         if rate >= self.target_share:
             return (
                 f"{period}, you saved {rate:.1%} of your income, which meets "
-                f"the {self.target_share:.0%} target_share, great job!"
+                f"the {self.target_share:.0%} target share, great job!"
             )
         total_extra_missing = self.target_share * history.total_income - history.net
         extra_per_month = total_extra_missing / len(history.months)
@@ -105,7 +105,7 @@ class RecurringPaymentsRule(AdviceRule):
         share = total_monthly_cost(payments) / typical_spending
         if share <= self.limit:
             return (
-                f"Recurring payments make up {share:.1%} of a typical month's "
+                f"Recurring payments make up {share:.0%} of a typical month's "
                 f"spending, which is within the {self.limit:.0%} limit."
             )
         biggest = ", ".join(p.description for p in payments[:5])
@@ -233,10 +233,10 @@ def give_advice(
         rules = [
             SavingsRateRule(),
             RecurringPaymentsRule(),
+            SubscriptionRule(),
             EverydaySpendingRule(),
             BigExpenseRule(),
             InvestmentRule(),
-            SubscriptionRule(),
         ]
     recent = history.last_months(recent_months)
     messages = []

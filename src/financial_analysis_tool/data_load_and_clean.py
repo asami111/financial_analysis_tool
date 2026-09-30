@@ -55,7 +55,11 @@ def load_transactions(
     and raises a ValueError accordingly.
     """
 
-    df = pd.read_csv(path)
+    try:
+        df = pd.read_csv(path)
+    # A completely empty file has no header row to read.
+    except pd.errors.EmptyDataError:
+        raise ValueError("The file is empty.")
 
     missing_columns = []
 
