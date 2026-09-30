@@ -11,7 +11,33 @@ from financial_analysis_tool.recurring_payments import (
     total_monthly_cost,
 )
 from financial_analysis_tool.forecast import BalanceForecast
+from financial_analysis_tool.recommendations import (
+    AdviceRule,
+    EverydaySpendingRule,
+    InvestmentRule,
+    BigExpenseRule,
+    RecurringPaymentsRule,
+    SavingsRateRule,
+    SubscriptionRule,
+    give_advice,
+    split_expenses,
+)
 
-__all__ = ["load_transactions", "remove_transfers", "TransactionHistory",
-           "RecurringPayment", "find_recurring_payments", "total_monthly_cost",
-           "BalanceForecast",]
+__all__ = [
+    "load_transactions",
+    "remove_transfers",
+    "TransactionHistory",
+    "RecurringPayment",
+    "find_recurring_payments",
+    "total_monthly_cost",
+    "BalanceForecast",
+    "AdviceRule",
+    "SavingsRateRule",
+    "RecurringPaymentsRule",
+    "SubscriptionRule",
+    "EverydaySpendingRule",
+    "BigExpenseRule",
+    "InvestmentRule",
+    "give_advice",
+    "split_expenses",
+]
