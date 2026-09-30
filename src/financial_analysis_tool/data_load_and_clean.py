@@ -91,7 +91,8 @@ def load_transactions(
 
     if not include_transfers:
         df = remove_transfers(df)
-
+    if df.empty:
+        raise ValueError("The file contains no transactions to analyze.")
     return df.sort_values("Date").reset_index(drop=True)
 
 

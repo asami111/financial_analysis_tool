@@ -40,26 +40,26 @@ class TransactionHistory:
 
     @property
     def total_income(self) -> float:
-       """The sum of all income."""
-       return self.income["Signed Amount"].sum()
+        """The sum of all income."""
+        return self.income["Signed Amount"].sum()
 
     @property
     def total_spending(self) -> float:
-       """The sum of all expenses (displayed as a positive number)."""
-       return -self.expenses["Signed Amount"].sum()
+        """The sum of all expenses (displayed as a positive number)."""
+        return -self.expenses["Signed Amount"].sum()
 
     @property
     def net(self) -> float:
-       """Total income minus total spending."""
-       return self.total_income - self.total_spending
+        """Total income minus total spending."""
+        return self.total_income - self.total_spending
 
     @property
     def months(self) -> list:
-       """Return all months appearing in the history and sorts them."""
-       return sorted(self.transactions["Month"].unique())
+        """Return all months appearing in the history and sorts them."""
+        return sorted(self.transactions["Month"].unique())
 
     def monthly_summary(self) -> pd.DataFrame:
-        """Return income, spending and net for every month
+        """Return income, spending and net for every month.
 
         Fills NaN values with zeros.
         """
