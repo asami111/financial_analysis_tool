@@ -22,6 +22,13 @@ from financial_analysis_tool.recommendations import (
     give_advice,
     split_expenses,
 )
+from financial_analysis_tool.plots import (
+    plot_balance,
+    plot_monthly_income_and_spending,
+    plot_recurring_payments,
+    plot_spending_by_category,
+    save_all_plots,
+)
 
 __all__ = [
     "load_transactions",
@@ -40,4 +47,9 @@ __all__ = [
     "InvestmentRule",
     "give_advice",
     "split_expenses",
+    "plot_monthly_income_and_spending",
+    "plot_spending_by_category",
+    "plot_recurring_payments",
+    "plot_balance",
+    "save_all_plots",
 ]

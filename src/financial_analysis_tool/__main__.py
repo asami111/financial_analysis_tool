@@ -10,6 +10,7 @@ from financial_analysis_tool.recurring_payments import (
     total_monthly_cost,
 )
 from financial_analysis_tool.transaction_history import TransactionHistory
+from financial_analysis_tool.plots import save_all_plots
 
 USAGE = """Usage: uv run -m financial_analysis_tool <command> [options]
 
@@ -19,6 +20,7 @@ Commands:
   recurring            Detected bills and subscriptions.
   forecast             Predicted balance for the next months.
   advice               Textual recommendations for saving and investing.
+  plots                Save all charts as PNG files into plots/.
   report               All of the above.
   help                 Show this message.
 
@@ -32,7 +34,7 @@ Example:
   uv run -m financial_analysis_tool report --balance 5000
 """
 
-COMMANDS = ("summary", "recurring", "forecast", "advice", "report")
+COMMANDS = ("summary", "recurring", "forecast", "advice", "plots", "report")
 # A forecast of more than 10 years is not meaningful.
 MAX_MONTHS = 120
 
@@ -114,6 +116,19 @@ def print_advice(history: TransactionHistory):
     print_heading("Recommendations")
     for number, message in enumerate(give_advice(history), start=1):
         print(f"{number}. {message}")
+
+
+def print_plots(history: TransactionHistory, balance: float, months: int):
+    """Save all charts and print where they were saved."""
+    print_heading("Charts")
+    try:
+        paths = save_all_plots(history, starting_balance=balance, months=months)
+    # For example, there is no permission to write.
+    except OSError as error:
+        print(f"Error: the charts could not be saved: {error}")
+        return
+    for path in paths:
+        print(f"Saved {path}")
 
 
 def pop_option(args: list, name: str) -> str | None:
@@ -216,11 +231,14 @@ def main(args: list | None = None):
             print_forecast(history, balance, months)
         case "advice":
             print_advice(history)
+        case "plots":
+            print_plots(history, balance, months)
         case "report":
             print_summary(history)
             print_recurring(history)
             print_forecast(history, balance, months)
             print_advice(history)
+            print_plots(history, balance, months)
 
 
 if __name__ == "__main__":

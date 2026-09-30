@@ -64,6 +64,12 @@ def load_transactions(
             missing_columns.append(col)
     if missing_columns:
         raise ValueError(f"Missing required columns: {missing_columns}")
+    if df.empty:
+        raise ValueError("The file contains no transactions to analyze.")
+    if df["Date"].isna().any() or df["Amount"].isna().any():
+        raise ValueError("Every transaction needs a date and an amount.")
+    if not pd.api.types.is_numeric_dtype(df["Amount"]):
+        raise ValueError("The Amount column must contain only numbers.")
 
     unknown_transaction_types = set(df["Transaction Type"]) - {"debit", "credit"}
     if unknown_transaction_types:
