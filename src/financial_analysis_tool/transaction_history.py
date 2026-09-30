@@ -1,4 +1,4 @@
-"""A class that holds a transaction history and holds data about it."""
+"""A class that holds a transaction history and summarizes it."""
 
 import pandas as pd
 
@@ -16,7 +16,7 @@ class TransactionHistory:
 
     @classmethod
     def from_csv(cls, path: str = DATA_FILE_PATH, date_format: str = "%m/%d/%Y"):
-        # Creating the TransactionHistory from the CSV file.
+        """Create the TransactionHistory from the CSV file."""
         return cls(load_transactions(path, date_format))
 
     def __len__(self):
@@ -30,49 +30,54 @@ class TransactionHistory:
 
     @property
     def income(self) -> pd.DataFrame:
-        # Returns the income transactions.
+        """Return the income transactions."""
         return self.transactions[self.transactions["Signed Amount"] > 0]
 
     @property
     def expenses(self) -> pd.DataFrame:
-        # Returns the spending transactions.
+        """Return the spending transactions."""
         return self.transactions[self.transactions["Signed Amount"] < 0]
 
     @property
     def total_income(self) -> float:
-        # The sum of all income.
-        return self.income["Signed Amount"].sum()
+       """The sum of all income."""
+       return self.income["Signed Amount"].sum()
 
     @property
     def total_spending(self) -> float:
-        # The sum of all expenses (displayed as a positive number).
-        return -self.expenses["Signed Amount"].sum()
+       """The sum of all expenses (displayed as a positive number)."""
+       return -self.expenses["Signed Amount"].sum()
 
     @property
     def net(self) -> float:
-        # Total income minus total spending.
-        return self.total_income - self.total_spending
+       """Total income minus total spending."""
+       return self.total_income - self.total_spending
 
     @property
     def months(self) -> list:
-        # Returns all months appearing in the history and sorts them.
-        return sorted(self.transactions["Month"].unique())
+       """Return all months appearing in the history and sorts them."""
+       return sorted(self.transactions["Month"].unique())
 
     def monthly_summary(self) -> pd.DataFrame:
-        """Return income, spending and net for every month and fills NaN values with zeros."""
+        """Return income, spending and net for every month
+
+        Fills NaN values with zeros.
+        """
         income = self.income.groupby("Month")["Signed Amount"].sum()
         # Here expenses will be shown as positive.
         spending = -self.expenses.groupby("Month")["Signed Amount"].sum()
         summary = pd.DataFrame({"Income": income, "Spending": spending})
-        """ Reorders by month and adds missing months in the summary DataFrame, 
-         as well as filling NaN values in the summary DataFrame with zero. """
+        # Reorder by month and add missing months in the summary DataFrame,
+        # as well as filling NaN values in the summary DataFrame with zero.
         summary = summary.reindex(self.months).fillna(0)
         # Create 'Net' column in the summary DataFrame.
         summary["Net"] = summary["Income"] - summary["Spending"]
         return summary
 
     def monthly_statistics(self) -> pd.DataFrame:
-        """Returns the mean, median, min and max of the monthly income, spending and net."""
+        """Return the mean, median, min and max of the monthly income,
+        spending and net.
+        """
 
         summary = self.monthly_summary()
         return pd.DataFrame(
@@ -85,14 +90,22 @@ class TransactionHistory:
         )
 
     def spending_by_category(self) -> pd.Series:
-        """Returns the total spending per category, in descending order (largest first).
-        Expenses are displayed in positive values here."""
+        """Return the total spending per category, in descending order.
+
+        Expenses are displayed in positive values here.
+        """
         spending = -self.expenses.groupby("Category")["Signed Amount"].sum()
         return spending.sort_values(ascending=False)
 
     def spending_by_description(self, n: int = 5) -> pd.Series:
-        """Returns the n Descriptions with the highest total spending, in descending
-         order (largest first).
-         Expenses are also displayed in positive values here."""
+        """Return the n Descriptions with the highest total spending, largest first.
+
+        Expenses are also displayed in positive values here.
+        """
         spending = -self.expenses.groupby("Description")["Signed Amount"].sum()
         return spending.sort_values(ascending=False).head(n)
+
+    def last_months(self, n: int = 12) -> "TransactionHistory":
+        """Return a new TransactionHistory with only the last n months."""
+        recent = self.transactions["Month"].isin(self.months[-n:])
+        return TransactionHistory(self.transactions[recent].copy())

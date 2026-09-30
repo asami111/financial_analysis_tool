@@ -27,26 +27,32 @@ REQUIRED_COLUMNS = [
 ]
 
 # Paying off a credit card from the checking account moves money between
-# the person's own accounts. It will considered as neither net income, nor net spending.
+# the person's own accounts. I will consider it as neither net income, nor net spending.
 TRANSFER_DESCRIPTION = "Credit Card Payment"
 
 
-def load_transactions(path: str = DATA_FILE_PATH, date_format: str = "%m/%d/%Y",
-    include_transfers: bool = False,) -> pd.DataFrame:
+def load_transactions(
+    path: str = DATA_FILE_PATH,
+    date_format: str = "%m/%d/%Y",
+    include_transfers: bool = False,
+) -> pd.DataFrame:
     """Load transactions from a CSV file and prepare them for analysis.
+
     The function takes the path for the dataset as an input, if not provided then
     it runs on the default dataset path stated.
-    It also takes the preferred date format as an input parameter, if not provided then it
-    takes the default date format stated, since this is the one used by my own used dataset.
+    It also takes the preferred date format as an input parameter,
+    if not provided then it takes the default date format stated, since this is
+    the one used by my own used dataset.
     It also has include_transfers option that toggles if the user
     wants to include TRANSFER_DESCRIPTION = 'Credit Card Payment' in some computations,
     since paying off a credit card from the checking account moves money between
     the person's own accounts. The user may want to consider it as neither net income,
     nor net spending, which is my default case and the case I will mainly
     consider throughout my program, but the option will still be there in
-    the tool for the user to choose.
-    The function checks if there are missing columns or unknown transaction types other than
-    'debit' or 'credit' and raises an exception accordingly.
+    the tool for the user to choose, if preferred.
+    The function checks if there are missing columns or unknown transaction types
+    other than 'debit' or 'credit' or dates that do not match date_format
+    and raises a ValueError accordingly.
     """
 
     df = pd.read_csv(path)

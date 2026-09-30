@@ -1,7 +1,7 @@
 [project]
 name = "financial-analysis-tool"
 version = "0.1.0"
-description = "Add your description here"
+description = "Analyze a transaction history: recurring payments, balance forecast and recommendations for savings and investments."
 readme = "README.md"
 authors = [
     { name = "Andrew Awad", email = "andrewsamihsm@gmail.com" }

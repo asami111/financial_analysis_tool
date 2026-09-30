@@ -10,6 +10,8 @@ from financial_analysis_tool.recurring_payments import (
     find_recurring_payments,
     total_monthly_cost,
 )
+from financial_analysis_tool.forecast import BalanceForecast
 
 __all__ = ["load_transactions", "remove_transfers", "TransactionHistory",
-           "RecurringPayment", "find_recurring_payments", "total_monthly_cost",]
+           "RecurringPayment", "find_recurring_payments", "total_monthly_cost",
+           "BalanceForecast",]
